@@ -1,0 +1,225 @@
+{
+ "name": "样本数量",
+ "children": [
+	 
+  
+   
+    {
+     "name": "鼬课",
+     "children": [
+      {"name": "花儿(Flower)", "size": 198}
+    
+     ]
+    },
+        {
+     "name": "犬科",
+     "children": [
+      {"name": "高飞(Goofy)", "size": 576},
+      {"name": "LadyAndTramp", "size": 156},
+      {"name": "101只斑点狗(101 Dalmations)", "size": 521},
+      {"name": "伊朗狼阿力(From:JungleBook)", "size": 44},
+   		{"name": "狐狸罗宾汉(RobinHood)", "size": 649},
+   		{"name": "狐狸公主玛丽安(From RobinHood)", "size": 453},
+   		{"name": "闪电狗(Bolt)", "size": 1852},
+   		{"name": "灰狼诺丁汉郡长(Pat Buttram)", "size": 43},
+   		{"name": "赤狐尼克(From:Zootopia)", "size": 4457}
+     ]
+    },
+        {
+     "name": "猫科",
+     "children": [
+      {"name": "柴郡猫(Cheshire Cat)", "size": 1138},
+      {"name": "黑豹巴吉(Bagheera,From JungleBook)", "size": 91},
+      {"name": "孟加拉虎可汗(From JungkeBook)", "size": 46},
+      {"name": "猫咪历险记(The Aristocats)", "size": 143},
+   		{"name": "跳跳虎(Tigger)", "size": 543},
+   		{"name": "辛巴(Simba)", "size": 868},
+   		{"name": "娜拉(Nala)", "size": 774},
+   		{"name": "木法沙(Mufasa)", "size": 331},
+   		{"name": "女猫Miittens(From:Bolt)", "size": 958},
+   		{"name": "狮子市长Leodore(From:Zootopia)", "size": 105},
+   		{"name": "胖子猎豹Benjamin(From:Zootopia)", "size": 24}
+     ]
+    },
+        {
+     "name": "熊科",
+     "children": [
+      {"name": "懒熊巴鲁Baloo(From JungleBook)", "size": 90},
+      {"name": "大棕熊小约翰(From RobinHood)", "size": 58},
+      {"name": "小熊维尼(Winne)", "size": 1006}
+     ]
+    },
+        {
+     "name": "獴科",
+     "children": [
+      {"name": "丁满(Timon)", "size": 176}
+     ]
+    },
+   
+  
+	 
+  {
+   "name": "非食肉目哺乳纲",
+   "children": [
+    {
+     "name": "啮齿目",
+     "children": [
+          {
+       "name": "鼠亚目",
+       "children": [
+        {"name": "米奇(Mickey)", "size": 1585},
+        {"name": "睡鼠(Dormouse)", "size": 93},
+        {"name": "救难小英雄(Bernard and Bianca)", "size": 125}
+       ]
+      }
+     ]
+    },
+    {
+     "name": "食肉目"
+
+    },
+    {
+     "name": "长鼻目",
+     "children": [
+		    {
+		 "name": "象科",
+		 "children": [
+		  {"name": "小飞象(Dumbo)", "size": 246},
+		  {"name": "亚洲象哈蒂(From JungleBook)", "size": 22}
+		 ]
+		}
+     ]
+    },
+	    {
+	 "name": "偶蹄目",
+	 "children": [
+		 {
+			 "name":"鹿科",
+			 "children":[
+				 {"name":"小鹿斑比","size":626}
+			 ]
+		 },
+	     {
+	  
+	  "name": "猪科-野猪",
+	  "children": [
+	   {"name": "鹏鹏(Pumbaa)", "size": 43}
+	  ]
+	 }
+	 ]
+	},
+	    {
+	 "name": "兔形目",
+	 "children": [
+	  {"name": "三月兔(March)", "size": 98},
+	  {"name": "兔警官(Judy,From Zootopia)", "size": 608}
+	 ]
+	},
+	    {
+	 "name": "灵长目",
+	 "children": [
+	      {"name": "猩猩王路易(From JungleBook)", "size": 39},
+	      {"name": "国师法兰奇(Flunkey,From Simba)", "size": 53}
+	 ]
+	},
+	{
+	 "name": "羊科",
+	 "children": [
+	  {"name": "绵羊副市长(From Zootopia)", "size": 23}
+	 ]
+	},
+	{
+	 "name": "牛科",
+	 "children": [
+	  {"name": "警察局局长艾尔巴(From Zootopia)", "size": 46}
+	 
+	 ]
+	}
+   ]
+  },
+  {
+   "name": "鸟纲",
+   "children": [
+        {
+     "name": "雁形目",
+     "children": [
+          {
+       "name": "鸭总科",
+       "children": [
+        {"name": "唐老鸭(Donald)", "size": 1987},
+		{"name": "史高治", "size": 903},
+		{"name": "三只小鸭", "size": 1016},
+		{"name": "黛丝", "size": 539}
+       ]
+      }
+     ]
+    },
+	 {
+	 "name": "鹦形目",
+	 "children": [
+	      {
+	   "name": "鹦鹉科",
+	   "children": [
+	    {"name": "乔奥(三骑士)", "size": 93}
+	   ]
+	  }
+	 ]
+	},
+	    {
+	 "name": "鸡形目",
+	 "children": [
+	      {
+	   "name": "雉科",
+	   "children": [
+	    {"name": "班基德", "size": 56},
+		{"name": "胖鸡教母(From RobinHood)", "size": 71}
+	   ]
+	  }
+	 ]
+	}
+   ]
+  },
+  {
+   "name": "爬行纲",
+   "children": [
+    {
+     "name": "蜥蜴亚目",
+     "children": [
+      {"name": "蜥蜴比尔(Bill)", "size": 101}
+     ]
+    },
+	    {
+	 "name": "蛇目",
+	 "children": [
+	  {"name": "哈斯爵士(From RobinHood)", "size": 193},
+	  {"name": "丛林巨蟒(From JungleBook)", "size": 218}
+	 ]
+	}
+   ]
+  },
+  {
+   "name": "两栖纲",
+   "children": [
+        {
+     "name": "蟾蜍科",
+     "children": [
+      {"name": "小蟾蜍(Ichabod and Mr.Toad)", "size": 79}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "想象物种",
+   "children": [
+    {"name": "史迪奇(Stutch)", "size": 2990}
+   ]
+  },
+  {
+   
+  },
+  {},
+  {},
+  {},
+  {}
+ ]
+}

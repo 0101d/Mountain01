@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html>
+	
+<head>
+	<title>迪士尼动物人设-收藏热度统计</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	
+	<script src="DisneyProject/d3-scale-radial.js"></script>
+	
+	<script>//-----------------------------------------------------------按钮触发的链接函数
+		function Oneclick(){
+			window.location.assign("index1.html")
+		}
+		function Twoclick(){
+			window.location.assign("index2.html")
+		}
+	</script>
+	
+	<style>
+		html, body {
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			font-family: Helvetica, Calibri, Roboto, Open Sans, sans-serif
+			-webkit-backface-visibility: hidden;
+		}
+		* {
+			box-sizing: inherit;
+		}
+		h1 {
+			text-align: center;
+		}
+		svg {
+			margin:auto;
+			display:block;
+			border-radius: 5px;
+		}
+		.circle-overlay {
+			font-size: 16px;
+			border-radius: 90%;
+			position: absolute;
+			overflow: hidden;
+			/*it's buggy with the foreignObject background right now*/
+			/*background-color: rgba(255,255,255,0.5);*/
+		}
+		.circle-overlay__inner {
+			text-align: center;
+			width: 100%;
+			height: 100%;
+		}
+		.hidden {
+			display: none;
+		}
+		.node-icon--faded {
+			opacity: 0.5;
+		}
+		.legend-size circle {
+			fill: rgb(31, 119, 180);
+		}
+		
+		text{} 
+		.headline{
+			position: absolute;
+			left:13px;
+			top:12px;
+			background-color: beige;
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-border-radius: 5px;
+			border: none;
+			padding: 15px 30px 15px 30px;
+			/*color: slategray;*/
+		}
+		
+		input{
+			/*此处设置的是bottom按钮的性质属性*/
+		}
+		.one{
+			font-size: 16px;
+			position: absolute;
+			left: 500px;
+			top:12px;
+			background-color: beige;
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-border-radius: 5px;
+			border: none;
+			padding: 15px 30px 15px 30px;
+			color: slategray;
+		}
+		.two{
+			font-size: 16px;
+			position: absolute;
+			left: 800px;
+			top:12px;
+			background-color: beige;
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-border-radius: 5px;
+			border: none;
+			padding: 15px 30px 15px 30px;
+			color: slategray;
+		}
+		
+		div {
+			
+		}
+		#left{
+			/*position:fixed;*/
+			position: fixed;
+			padding: 10px;
+			padding-top: 14px;
+			left: 10px;
+		}
+	</style>
+</head>
+<h style="background-color: darkslategray;" height=80px></h>
+<body style="background-color: white;">
+	
+	<div id="main1" style="width:100%; float: top;">
+	<div id="top" style="height: 70px; float:top; background-color: lightgrey ;">
+		<text class="headline">对迪士尼拟人化动物角色的 研究 和 数据可视化呈现</text>
+		<input class="one" type="button" value="不同物种和角色的热度波动性" onclick="Oneclick()">
+		<input class="two" type="button" value="不同物种和角色的样本容量" onclick="Twoclick()">
+	</div>
+	<div id="top" style="width: ; height: 20px; float:bottom; background-color: white;"></div>
+	</div> 
+	
+	<!--div id="main" style="width:100%; height: 1400px; float: bottom;">
+	<!-------------------------------------------------------------！！！！！！！！！！！------以上表示的是主标签-->	
+	
+	<div id="tooleft" style="width:1%; float: left; background-color:white; " >
+		<left>
+			<text style="font-size:13px " x='200' y='20' width="85%">.  </text>
+		</left>
+	</div>
+	
+	<div id="leftback" style="width:23%; float:left; background-color:beige; border-radius: 5px;">
+	<div id="left" style="width:23%; float:left; background-color:lightgrey; border-radius: 5px;">
+		
+		<left >
+			<text  class="slide" style="font-size:13px " x='200' y='20' width="85%">左边的列表表示拟人化角色在生物分类中的科属，右边则对应的是迪士尼作品中的人设，半径的平方代表作品在大众中普遍的受欢迎程度。<br/>
+			
+			</text>
+			<text class="slide" style="font-size:13px ">
+				通过对DeviantArt上发布的迪士尼人物的收藏数量分析，大概可以将这些人物分为三个梯队：<br/>
+				第一梯队是鸭总科和鼠亚目，代表人物是Donald（唐老鸭）和Mickey（米老鼠），这两个物种在大众中最受欢迎。
+				这一梯队样本较少、个体比较突出。
+				受到最多欢迎的原因更可能来自于作品在大众媒体中留下的印象。<br/>
+				第二梯队是猫科和犬科。这一梯队的特点是样本多，但是很少给公众留下代表性极强的人物，但是平均热度偏高。
+				主要原因可能与物种本身和人类的亲近程度相关。<br/>
+				第三梯队是物种范围最多的梯队，包括了熊科、猪科、獴科、兔科、鹿科以及史迪奇这种想象物种。这一梯队和第一梯队特点相近，都是属于离人类生活较远、代表性较强的物种。
+				代表人物有Bambi（小鹿斑比），Judy(兔警官)等这样的角色。受欢迎的主因还是观众对作品本身的印象，而不是物种层面的亲近。<br/>
+				第四梯队是其他物种，这一梯队无论是在作品的影响程度上还是物种层面上都没有给大众留下足够深的印象。
+			</text>
+		</left>
+	</div>
+	</div>
+	
+	
+	
+	<div id="right" style="width: 76%; height: 800px; float: right; border-radius: 5px;">
+	
+	
+	<div id="topofright" style="float:top;">
+	
+	
+	<svg class="top" width="98%" height="800" font-family="sans-serif" font-size="10" text-anchor="middle">
+		
+		
+	
+	</svg>
+	
+	<script src="DisneyProject/d3.min.js"></script>
+	
+	<script src="DisneyProject/d3-legend.min.js"></script>
+	
+	<script>
+		// Based loosely from this D3 bubble graph https://bl.ocks.org/mbostock/4063269
+		// And this Forced directed diagram https://bl.ocks.org/mbostock/4062045
+		
+		href = 'http://127.0.0.1:8848/FourthProject/hello.html'
+		
+		let data = [{
+			cat: '鼠亚目', name: '米奇(Mickey)', value: 25.64,//name属性在鼠标
+			icon: 'img/mickey.png',//
+			//url : 'http://127.0.0.1:8848/FourthProject/hello.html',
+			desc: `
+				最高热度:6257,
+				平均热度:627.3
+			`
+		}, 
+		{
+			cat: '鼠亚目', name: '米妮(Minne)', value: 14.95,//name属性在鼠标
+			icon: 'img/Minnie.png',//
+			//url : 'http://127.0.0.1:8848/FourthProject/hello.html',
+			desc: `
+				最高热度:2096,
+				平均热度:223.6
+			`
+		},
+		{
+			cat: '鹿科', name: '斑比(Bambi)', value: 16.30,
+			icon: 'img/bambi.png',
+			desc: `
+				最高热度:5708,
+				平均热度:265.66
+			`
+		},
+		{
+			cat: '鹿科', name: 'Gazelle', value: 11.65,
+			icon: 'img/Gazelle.jpg',
+			desc: `
+				最高热度:3847,
+				平均热度:135.73
+			`
+		},
+		{
+			cat: '鹿科', name: '芬琳(Faline)', value: 8.04,
+			icon: '芬琳(Faline)',
+			desc: `
+				最高热度:1019,
+				平均热度:64.71
+			`
+		},
+		{
+			cat: '鸭总科', name: '唐老鸭(Donald)', value: 28,
+			icon: 'img/donald.png',
+			desc: `
+				最高热度:5371,
+				平均热度:701.4
+			`
+		},
+		{
+			cat: '鸭总科', name: '黛丝(Daisy)', value: 17.93,
+			icon: '黛丝(Daisy)',
+			desc: `
+				最高热度:1465,
+				平均热度:321.4
+			`
+		},
+		{
+			cat: '鸭总科', name: '史高治(Scrooge)', value: 9.36,
+			icon: '史高治(Scrooge)',
+			desc: `
+				最高热度:986,
+				平均热度:87.71
+			`
+		},
+		{
+			cat: '猫科', name: '巴吉(Bagheera)', value: 18.10,
+			icon: 'img/bagheera.png',
+			desc: `
+				最高热度:8590,
+				平均热度:327.79
+			`
+				
+			
+		},
+		{
+			cat: '熊科', name: '巴鲁(Baloo)', value: 12.54,
+			icon: 'img/baloo.png',
+			desc: `
+				最高热度:2930,
+				平均热度:157.31
+			`
+		},
+		{
+			cat: '猫科', name: '谢利可汗', value: 15.61,
+			icon: 'img/shere_khan.png',
+			desc: `
+				(Shere_Khan)
+				最高热度:3183,
+				平均热度:167.02,
+			`
+		},
+		{
+			cat: '象科', name: '克罗尼尔哈蒂(Colonel_Hathi)', value: 8.04,
+			icon: 'img/hathi.png',
+			desc: `
+				最高热度:199,
+				平均热度:64.59,
+			`
+		},
+		{
+			cat: '犬科', name: '阿力(Rama)', value: 5,
+			icon: 'img/rama2.png',
+			desc: `
+				最高热度:161,
+				平均热度:23.48
+			`
+		},
+		{
+			cat: '犬科', name: '罗宾汉(RobinHood)', value: 16.09,
+			icon: 'img/robin_hood.png',
+			desc: `
+				最高热度:17897,
+				平均热度:258.89
+			`
+		},
+		{
+			cat: '犬科', name: '高飞(Goofy)', value: 7.66,
+			icon: '高飞(Goofy)',
+			desc: `
+				最高热度:1897,
+				平均热度:58.65
+			`
+		},
+	    {
+			cat: '熊科', name: '维尼(Winne)', value: 10.31,
+			icon: 'img/winne.png',
+			desc: `
+				最高热度:500,
+				平均热度:106.26
+			`
+		},
+		{
+			cat: '熊科', name: '基尼(Kenai)', value: 8.69,
+			icon: 'Kenai(BearBro)',
+			desc: `
+				最高热度:756,
+				平均热度:75.56
+			`
+		},
+		{
+			cat: '熊科', name: '科达(Koda)', value: 10.25,
+			icon: 'Koda(BearBrother)',
+			desc: `
+				最高热度:1056,
+				平均热度:105.06
+			`
+		},
+		{
+			cat: '熊科', name: 'Friedkin', value: 3.25,
+			icon: 'Friedkin',
+			desc: `
+				最高热度:35,
+				平均热度:10.03
+			`
+		},
+		{
+			cat: '熊科', name: '小约翰(Little John)', value: 6.71,
+			icon: 'LittleJohn',
+			desc: `
+				最高热度:247,
+				平均热度:45.05
+			`
+		},
+		{
+			cat: '雉科', name: '班吉德(Panchito)', value: 5.05,
+			icon: 'img/Panchito.png',
+			desc: `
+				最高热度:103,
+				平均热度:25.51
+			`
+		},
+		{
+			cat: '雉科', name: 'ChickenLittle', value: 9.80,
+			icon: 'img/chicken_little.png',
+			desc: `
+				最高热度:773,
+				平均热度:65.66
+			`
+		},
+		{
+			cat: '猫科', name: '辛巴(Simba)', value: 19.34,
+			icon: 'img/simba.png',
+			desc: `
+				最高热度:7059,
+				平均热度:374.02
+			`
+		},
+		
+		{
+			cat: '猫科', name: '娜娜(Nala)', value: 18.88,
+			icon: 'img/nala.png',
+			desc: `
+				最高热度:4626,
+				平均热度:356.34
+			`
+		},
+		{
+			cat: '猪科', name: '鹏鹏(Pumbaa)', value: 14.43,
+			icon: 'img/pumbaa.png',
+			desc: `
+				最高热度:1957,
+				平均热度:208.28
+			`
+		},
+		{
+			cat: '獴科', name: '丁满(Timon)', value: 14.39,
+			icon: 'img/	timon.png',
+			desc: `
+				最高热度:4574,
+				平均热度:207.05
+			`
+		},
+		{
+			cat: '犬科', name: '波特(Bolt)', value: 11.62,
+			icon: 'img/bolt.png',
+			desc: `
+				最高热度:4565,
+				平均热度:134.95
+			`
+		},
+		{
+			cat: '犬科', name: 'Nottingham', value: 4.80,
+			icon: 'Nottingham',
+			desc: `
+				最高热度:585,
+				平均热度:23.65
+			`
+		},
+		{
+			cat: '犬科', name: '玛丽安(Marian(Robinhood))', value: 11.24,
+			icon: 'img/Marian.png',
+			desc: `
+				最高热度:463,
+				平均热度:126.41
+			`
+		},
+		{
+			cat: '兔科', name: '朱迪(Judy)', value: 19.24,
+			icon: 'img/judy.png',
+			desc: `
+				最高热度:8417,
+				平均热度:370.16
+			`
+		},
+		{
+			cat: '树懒科', name: '闪电(Flash)', value: 14.34,
+			icon: 'img/Flash.png',
+			desc: `
+				最高热度:1409,
+				平均热度:205.64
+			`
+		},
+		{
+			cat: '猴科', name: '拉菲奇(Rafiki)', value: 10.38,
+			icon: 'img/Rafiki.png',
+			desc: `
+				最高热度:456,
+				平均热度:107.17
+			`
+		},
+		{
+			cat: '犬科', name: '尼克(Nick)', value: 13.42,
+			icon: 'img/nick.png',
+			desc: `
+				最高热度:29682,
+				平均热度:180.0424
+			`
+		},
+		{
+			cat: '牛', name: '艾尔巴(Bogo)', value: 11.54,
+			icon: 'img/bogo.jpg',
+			desc: `
+				 最高热度:873,
+				 平均热度:133.20
+			`		
+		},
+		{
+			cat: '牛', name: 'Yax', value: 3.47,
+			icon: 'Yax(Zootop..)',
+			desc: `
+				 最高热度:75,
+				 平均热度:12.07
+			`		
+		},
+		{
+			cat: '猫科', name: '狮子市长(Leodore)', value: 5.5,
+			icon: 'img/leodore.jpg',
+			desc: `
+				最高热度:181,
+				平均热度:25.15
+			`
+		},
+		{
+			cat: '猫科', name: '胖子猎豹(Benjamin)', value: 15.25,
+			icon: 'img/benjamin.png',
+			desc: `
+				最高热度:1965,
+				平均热度:232.70
+			`
+		}, {
+			cat: '想象物种', name: '史迪奇(Stitch)', value: 15.19,
+			icon: 'img/stitch.png',
+			desc: `
+				最高热度:43243,
+				平均热度:230.81
+			`
+		}, 
+		
+		{
+			cat: '羊', name: '绵阳副市长(BellWether)', value: 12.19,
+			icon: 'img/BellWether.png',
+			desc: `
+				最高热度:547,
+				平均热度:126.52
+			`
+		}, 
+		
+		{
+			cat: '象科', name: '小飞象(Dumbo)', value: 13.65,
+			icon: 'img/dumbo.png',
+			desc: `
+				最高热度:9967,
+				平均热度:186.37
+			`
+		},
+		{
+			cat: '象科', name: 'Jumbeaux', value: 3,
+			icon: 'Jumbeaux',
+			desc: `
+				最高热度:13,
+				平均热度:9
+			`
+		},
+		{
+			cat: '鼠亚目', name: '救难小英雄(The rescuers)', value: 21.22,
+			icon: 'img/TheResuers.png',
+			desc: `
+				最高热度:3184,
+				平均热度:586.57
+			`
+		},
+		{
+			cat: '犬科', name: '小姐和流氓(LadyAndTheTramp)', value: 19.37,
+			icon: 'img/LadyAndTramp.png',
+			desc: `
+				最高热度:4219,
+				平均热度:375.23
+			`
+		},
+		{
+			cat: '犬科', name: '101只斑点狗(101 Damations)', value: 10.78,
+			icon: 'img/101.jpg',
+			desc: `
+				最高热度:449,
+				平均热度:116.14
+			`
+		},
+		{
+			cat: '兔科', name: '桑普(Thumper)', value: 14.04,
+			icon: 'img/thumper.png',
+			desc: `
+				最高热度:5333,
+				平均热度:197.13
+			`
+		}];
+	</script>
+
+	<!--以下是对各标签的设定和功能设计-->
+	<script>
+		let svg = d3.select('svg.top');
+			
+			//.text('background','forestgreen');
+		let width = document.body.clientWidth; // get width in pixels
+		let height = +svg.attr('height');
+		let centerX = width * 0.4;//
+		let centerY = height * 0.53;
+		let strength = 0.05;
+		let focusedNode;
+		let format = d3.format(',d');
+		let scaleColor = d3.scaleOrdinal(d3.schemeCategory20);
+		//
+		let pack = d3.pack()
+			.size([width , height ])
+			.padding(0.5);//
+		let forceCollide = d3.forceCollide(d => d.r + 0.5);
+		// use the force
+		let simulation = d3.forceSimulation()
+			// .force('link', d3.forceLink().id(d => d.id))
+			.force('charge', d3.forceManyBody())
+			.force('collide', forceCollide)
+			// .force('center', d3.forceCenter(centerX, centerY))
+			.force('x', d3.forceX(centerX ).strength(strength))
+			.force('y', d3.forceY(centerY ).strength(strength));
+		// reduce number of circles on mobile screen due to slow computation
+		if ('matchMedia' in window && window.matchMedia('(max-device-width: 767px)').matches) {
+			data = data.filter(el => {
+				return el.value >= 50;
+			});
+		}
+		let root = d3.hierarchy({ children: data })
+			.sum(d => d.value);
+		// we use pack() to automatically calculate radius conveniently only
+		// and get only the leaves
+		let nodes = pack(root).leaves().map(node => {
+			console.log('node:', node.x, (node.x - centerX) * 2);
+			const data = node.data;
+			return {
+				x: centerX + (node.x - centerX) * 3, // magnify start position to have transition to center movement
+				y: centerY + (node.y - centerY) * 3,
+				r: 0, // for tweening
+				radius: node.r, //original radius
+				id: data.cat + '.' + (data.name.replace(/\s/g, '-')),
+				cat: data.cat,
+				name: data.name,
+				value: data.value,
+				icon: data.icon,
+				desc: data.desc,
+				//url:data.url,//
+			}
+		});
+		simulation.nodes(nodes).on('tick', ticked);
+		svg.style('background-color', 'beige');//
+		
+		let node = svg.selectAll('.node')//---
+			.data(nodes)
+			.enter().append('g')
+			.attr('class', 'node')
+			.call(d3.drag()
+				.on('start', (d) => {
+					if (!d3.event.active) simulation.alphaTarget(0.2).restart();
+					d.fx = d.x;
+					d.fy = d.y;
+				})
+				.on('drag', (d) => {
+					d.fx = d3.event.x;
+					d.fy = d3.event.y;
+				})
+				.on('end', (d) => {
+					if (!d3.event.active) simulation.alphaTarget(0);
+					d.fx = null;
+					d.fy = null;
+				}));
+		node.append('circle')
+			.attr('id', d => d.id)
+			.attr('r', 0)
+			.style('fill', d => scaleColor(d.cat))
+			.transition().duration(3000).ease(d3.easeElasticOut)
+				.tween('circleIn', (d) => {
+					let i = d3.interpolateNumber(0, d.radius);
+					return (t) => {
+						d.r = i(t);
+						simulation.force('collide', forceCollide);
+					}
+				})
+		node.append('clipPath')
+			.attr('id', d => `clip-${d.id}`)
+			.append('use')
+			.attr('xlink:href', d => `#${d.id}`);
+		// display text as circle icon
+		node.filter(d => !String(d.icon).includes('img/'))
+			.append('text')
+			.classed('node-icon', true)
+			.attr('clip-path', d => `url(#clip-${d.id})`)
+			.selectAll('tspan')
+			.data(d => d.icon.split(';'))
+			.enter()
+				.append('tspan')
+				.attr('x', 0)
+				.attr('y', (d, i, nodes) => (13 + (i - nodes.length / 2 - 0.5) * 10))
+				.text(name => name);
+		// display image as circle icon
+		node.filter(d => String(d.icon).includes('img/'))
+			.append('image')
+			.classed('node-icon', true)
+			.attr('clip-path', d => `url(#clip-${d.id})`)
+			.attr('xlink:href', d => d.icon)
+			.attr('x', d => - d.radius * 0.7)
+			.attr('y', d => - d.radius * 0.7)
+			.attr('height', d => d.radius * 2 * 0.7)
+			.attr('width', d => d.radius * 2 * 0.7)
+		node.append('title')//
+			.text(d => (d.cat + '::' + d.name + '\n' + format(d.value)));
+		let legendOrdinal = d3.legendColor()//
+			.scale(scaleColor)
+			.shape('rectangle');
+		let legend = svg.append('g')
+			.classed('legend-color', true)
+			.attr('text-anchor', 'start')
+			.attr('transform','translate(20,20)')
+			.style('font-size','12px')
+			.call(legendOrdinal);
+	
+		//let legencolor = svg.selectAll('.legend-color')
+			//.style('background-color', '#eee');//----------------------------------------!!!
+		/*
+		let sizeScale = d3.scaleOrdinal()
+  			.domain(['less use', 'more use'])
+  			.range([5, 10] );
+		let legendSize = d3.legendSize()
+			.scale(sizeScale)
+			.shape('circle')
+			.shapePadding(10)//10
+			.labelAlign('end');
+		let legend2 = svg.append('g')
+			.classed('legend-size', true)
+			.attr('text-anchor', 'start')
+			.attr('transform', 'translate(150, 25)')
+			.style('font-size', '24px')
+			.call(legendSize);
+		*/
+		/*
+		<foreignObject class="circle-overlay" x="10" y="10" width="100" height="150">
+			<div class="circle-overlay__inner">
+				<h2 class="circle-overlay__title">ReactJS</h2>
+				<p class="circle-overlay__body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam, sunt, aspernatur. Autem repudiandae, laboriosam. Nulla quidem nihil aperiam dolorem repellendus pariatur, quaerat sed eligendi inventore ipsa natus fugiat soluta doloremque!</p>
+			</div>
+		</foreignObject>
+		*/
+		let infoBox = node.append('foreignObject')
+			.classed('circle-overlay hidden', true)
+			.attr('x', -350 * 0.5 * 0.8)
+			.attr('y', -350 * 0.5 * 0.8)
+			.attr('height', 350 * 0.8)
+			.attr('width', 350 * 0.8)
+				.append('xhtml:div')
+				.classed('circle-overlay__inner', true);
+		infoBox.append('h2')
+			.classed('circle-overlay__title', true)
+			.text(d => d.name);
+		infoBox.append('p')
+			.classed('circle-overlay__body', true)
+			.html(d => d.desc);
+		node.on('click', (currentNode) => {
+			d3.event.stopPropagation();
+			console.log('currentNode', currentNode);
+			let currentTarget = d3.event.currentTarget; // the <g> el
+			if (currentNode === focusedNode) {
+				// no focusedNode or same focused node is clicked
+				return;
+			}
+			let lastNode = focusedNode;
+			focusedNode = currentNode;
+			simulation.alphaTarget(0.2).restart();
+			// hide all circle-overlay
+			d3.selectAll('.circle-overlay').classed('hidden', true);
+			d3.selectAll('.node-icon').classed('node-icon--faded', false);
+			// don't fix last node to center anymore
+			if (lastNode) {
+				lastNode.fx = null;
+				lastNode.fy = null;
+				node.filter((d, i) => i === lastNode.index)
+					.transition().duration(2000).ease(d3.easePolyOut)
+					.tween('circleOut', () => {
+						let irl = d3.interpolateNumber(lastNode.r, lastNode.radius);
+						return (t) => {
+							lastNode.r = irl(t);
+						}
+					})
+					.on('interrupt', () => {
+						lastNode.r = lastNode.radius;
+					});
+			}
+			if (!d3.event.active) simulation.alphaTarget(0.5).restart();
+			//
+			d3.transition().duration(2000).ease(d3.easePolyOut)
+				.tween('moveIn', () => {
+					console.log('tweenMoveIn', currentNode);
+					let ix = d3.interpolateNumber(currentNode.x, centerX);
+					let iy = d3.interpolateNumber(currentNode.y, centerY);
+					let ir = d3.interpolateNumber(currentNode.r, centerY * 0.5);
+					return function (t) {
+						// console.log('i', ix(t), iy(t));
+						currentNode.fx = ix(t);
+						currentNode.fy = iy(t);
+						currentNode.r = ir(t);
+						simulation.force('collide', forceCollide);
+					};
+				})
+				//
+				.on('end', () => {
+					simulation.alphaTarget(0);
+					let $currentGroup = d3.select(currentTarget);
+					$currentGroup.select('.circle-overlay')
+						.classed('hidden', false);
+					$currentGroup.select('.node-icon')
+						.classed('node-icon--faded', true);
+				})
+				//
+				.on('interrupt', () => {
+					console.log('move interrupt', currentNode);
+					currentNode.fx = null;
+					currentNode.fy = null;
+					simulation.alphaTarget(0);
+				});
+		});
+		// blur
+		d3.select(document).on('click', () => {
+			let target = d3.event.target;
+			// check if click on document but not on the circle overlay
+			if (!target.closest('#circle-overlay') && focusedNode) {
+				focusedNode.fx = null;
+				focusedNode.fy = null;
+				simulation.alphaTarget(0.2).restart();
+				d3.transition().duration(2000).ease(d3.easePolyOut)
+					.tween('moveOut', function () {
+						console.log('tweenMoveOut', focusedNode);
+						let ir = d3.interpolateNumber(focusedNode.r, focusedNode.radius);
+						return function (t) {
+							focusedNode.r = ir(t);
+							simulation.force('collide', forceCollide);
+						};
+					})
+					.on('end', () => {
+						focusedNode = null;
+						simulation.alphaTarget(0);
+					})
+					.on('interrupt', () => {
+						simulation.alphaTarget(0);
+					});
+				// hide all circle-overlay
+				d3.selectAll('.circle-overlay').classed('hidden', true);
+				d3.selectAll('.node-icon').classed('node-icon--faded', false);
+			}
+		});
+		function ticked() {
+			node
+				.attr('transform', d => `translate(${d.x},${d.y})`)
+				.select('circle')
+					.attr('r', d => d.r);
+		}
+	</script>
+	
+	</div><!--------------------------------------------------------这是右标签上部分的结尾，表示右上部分的可视化展现已完成-->
+	
+	<div id="bottomofright" style="float:bottom;" >
+	<!--这是右下部分的标签-->
+	<!----------------------------------------------------------------!!!!!!!!--------------------以下是第二个画布的内容-->
+	
+	
+	
+	<!--/div><!---------------------------！！！！！！！！！！！！！！这是整个右标签的结尾，表示整个右边部分的可视化展现都已经结束-->
+	
+	</div><!--这是整个内容的主标签的结束，表示整个内容，包括左边、右上、右下都已近结束-->
+	
+</body>
+
+</html>

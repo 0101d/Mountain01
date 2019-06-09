@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+
+<script>//
+		function Oneclick(){
+			window.location.assign("index1.html")
+		}
+		function Twoclick(){
+			window.location.assign("index.html")
+		}
+	</script>
+
+<style>
+	div {
+		
+	}
+	#top{
+		width: 100%;
+	}
+	#right{
+		border-radius: 5px;
+		right: 100px;
+	}
+	#left{
+		position: fixed;
+	}
+	text{
+		
+		  font: 13px sans-serif;
+		  
+		
+	}
+	.headline{
+		position: absolute;
+		left:13px;
+		top:12px;
+		background-color: beige;
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-border-radius: 5px;
+		border: none;
+		padding: 15px 30px 15px 30px;
+		/*color: slategray;*/
+		
+	}
+	input{
+		
+	}
+	.one{
+		font-size: 16px;
+		position: absolute;
+		width: 95%;
+		background-color: beige;
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-border-radius: 5px;
+		border: none;
+		padding: 15px 30px 15px 30px;
+		color: slategray;
+		bottom:65px;
+		left:5px;
+	}
+	.two{
+		font-size: 16px;
+		position: absolute;
+		width: 95%;
+		background-color: beige;
+		border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-moz-border-border-radius: 5px;
+		border: none;
+		padding: 15px 30px 15px 30px;
+		color: slategray;
+		bottom:8px;
+		left:5px;
+	}
+</style>
+</head>
+<body style="background-color: white;">
+	
+
+	
+<div id="bottom" style=" float:bottom;background-color: white;">
+	
+<div id="left"  height="960" style="width:20%; float:left; background-color:lightgrey; border-radius: 5px;">
+	<text  class="slide" style="font-size:13px " x='200' y='20'>该视图对主要人物的热度分了四个级别<br/>
+	将热度按照关注数量来分为：0至100、100至1k、1k至2k、2k以上四个等级，对四个等级所占比例进行了统计，方便以后对人设的市场预期有所帮助<br/>
+	超过50%部分的关注者热度分布在100的，占迪士尼主要动物角色3/5。分布在图表的人物狮子市长到丁满这一部分，暂且将这部分角色归结为：受欢迎的范围很广的一部分角色<br/>
+	热度100至1千部分超过20%的，占迪士尼主要角色5/6。分布在人物牛警官到丛林反派可汗这一部分，战且称这部分为：产生一定热度的角色<br/>
+	取交集可以发现宣传较为成功的动物拟人化角色。<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	<input class="one" type="button" value="回到上一级" onclick="Oneclick()">
+	<input class="two" type="button" value="回到首页" onclick="Twoclick()">
+	</text>
+</div>
+
+<div id="right" style="float: right; top: 10px;">
+<!--为右上方图层简历个人物角色的收藏量分布-->
+
+	
+<svg  class="topofright" width="1040" height="890" font-family="sans-serif" font-size="10" style="background-color:beige; border-radius: 5px;"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="d3-scale-radial.js"></script>
+
+<script>
+	//
+		function OverchangeColor(obj)
+		{
+			//
+			obj.style.background = 'pink';
+		}
+		//这个事件是光标离开对象的时候会发生什么颜色变换
+		function OutchangeColor(obj)
+		{
+			//因为JS会把HTML标签当做一个对象
+			//对象.属性 = 值;
+			obj.style.background = 'white';
+		}
+</script>
+
+
+<script>
+	
+
+var svg = d3.select("svg.topofright"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    innerRadius = 160,
+    outerRadius = Math.min(width, height) / 2 - 36,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var x = d3.scaleBand()
+    .range([0, 2 * Math.PI])
+    .align(0);
+
+var y = d3.scaleRadial()
+    .range([outerRadius, innerRadius]);
+
+var z = d3.scaleOrdinal()
+    .range(["darkgray", "beige", "#ff3300", "#000033"]);
+
+//程序正式引入数据库需要调用的这些内容
+d3.csv("mynewdata.csv", function(d, i, columns) {
+  for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
+  d.total = t;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  data.sort(function(a, b) { return b[data.columns[1]] / b.total - a[data.columns[1]] / a.total; });
+  x.domain(data.map(function(d) { return d.State; }));
+  z.domain(data.columns.slice(1));
+
+  g.append("g")
+    .selectAll("g")
+    .data(d3.stack()
+        .keys(data.columns.slice(1))
+        .offset(d3.stackOffsetExpand)
+        (data))
+    .enter().append("g")
+      .attr("fill", function(d) { return z(d.key); })
+    .selectAll("path")
+    .data(function(d) { return d; })
+    .enter().append("path")
+      .attr("d", d3.arc()
+		  //.OverchangeColor(this)
+		  //.OutchangeColor(this)
+          .innerRadius(function(d) { return y(d[0]); 
+									 //OverchangeColor(this);
+									 //OutchangeColor(this);
+		  })
+          .outerRadius(function(d) { return y(d[1]); })
+          .startAngle(function(d) { return x(d.data.State); })
+          .endAngle(function(d) { return x(d.data.State) + x.bandwidth(); })
+          .padAngle(0.04)
+          .padRadius(innerRadius));
+	  //-----------------------------------------------------------------------------------------------!
+    let node = svg.selectAll('g').selectAll('path')//---
+	node.append('title')//
+		.text("热度分散比例");
+//-----------------------------------------------------------------------------------------------!
+  var label = g.append("g")
+    .selectAll("g")
+    .data(data)
+    .enter().append("g")
+      .attr("text-anchor", "middle")
+      .attr("transform", function(d) { return "rotate(" + ((x(d.State) + x.bandwidth() / 2) * 180 / Math.PI - 90) + ")translate(" + outerRadius + ",0)"; });
+
+  label.append("line")//
+      .attr("x2", -5)
+      .attr("stroke", "#000");
+
+  label.append("text")
+      .attr("transform", function(d) { return ( x.bandwidth() / 2 + Math.PI / 2 + x(d.State) ) % (2 * Math.PI) < Math.PI ? "rotate(90)translate(0,16)" : "rotate(-90)translate(0,-9)"; })
+      .text(function(d) { return d.State; });
+
+  var yAxis = g.append("g")
+      .attr("text-anchor", "middle");
+
+//
+  var yTick = yAxis
+    .selectAll("g")
+    .data(y.ticks(10).slice(0))
+    .enter().append("g");
+
+  yTick.append("circle")//
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("r", y);
+
+
+  yTick.append("text")
+      .attr("y", function(d) { return -y(d); })
+      .attr("dy", "0.35em")
+      .attr("fill", "none")
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 5)
+      .attr("stroke-linejoin", "round")
+      .text(y.tickFormat(5, "%"));
+
+
+  yTick.append("text")
+      .attr("y", function(d) { return -y(d); })
+      .attr("dy", "0.35em")
+      .text(y.tickFormat(5, "%"));
+
+  var legend = g.append("g")
+    .selectAll("g")
+    .data(data.columns.slice(1).reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(-40," + (i - (data.columns.length - 1) / 2) * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("width", 18)
+      .attr("height", 18)
+      .attr("fill", z);
+
+  legend.append("text")
+      .attr("x", 24)
+      .attr("y", 9)
+      .attr("dy", "0.35em")
+      .text(function(d) { return d; });
+});
+
+</script>
+
+
+
+
+
+</div>
+
+</div>
+</body>
+</html>
